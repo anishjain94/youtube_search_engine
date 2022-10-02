@@ -25,8 +25,7 @@ func initializeApiRoutes(router *mux.Router) {
 
 	initHealthRoutes(router.PathPrefix("/health").Subrouter())
 
-	youtube.InitUserRoutes(router.PathPrefix("/user").Subrouter())
-
+	youtube.InitUserRoutes(router.PathPrefix("/search").Subrouter())
 }
 
 func initHealthRoutes(router *mux.Router) {

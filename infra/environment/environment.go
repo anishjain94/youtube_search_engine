@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	PORT int
-	ENV  string
+	PORT        int
+	ENV         string
 )
 
 func InitializeEnvs(variant ...string) {
