@@ -10,5 +10,8 @@ import (
 
 func InitUserRoutes(router *mux.Router) {
 	router.StrictSlash(true)
-	router.HandleFunc("", common.HandleHTTPGet(getVideosFromYoutube)).Methods(http.MethodGet)
+	// router.HandleFunc("", common.HandleHTTPGet(getVideosFromYoutube)).Methods(http.MethodGet)
+
+	router.HandleFunc("", common.HandleHTTPGet(getVideosFromDb)).Methods(http.MethodGet)
+
 }
