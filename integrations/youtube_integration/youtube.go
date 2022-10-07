@@ -24,7 +24,7 @@ func InitializeYoutube() {
 
 func SearchQuery(ctx *context.Context, query string) *YoutubeVideoDto {
 	youtubeClient := YoutubeClient.R()
-	queryParams := "/youtube/v3/search?part=snippet&maxResults=20&q=" + query + "&key=" + YOUTUBE_KEY
+	queryParams := "/youtube/v3/search?part=snippet&maxResults=100&q=" + query + "&key=" + YOUTUBE_KEY
 
 	resultDto := YoutubeVideoDto{}
 	resp, err := youtubeClient.
