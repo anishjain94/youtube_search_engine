@@ -1,4 +1,4 @@
-create table "youtube" (
+create table "youtube_data" (
     id int primary key,
     title varchar(100),
     description varchar(300),
@@ -9,5 +9,13 @@ create table "youtube" (
     deleted_at timestamp
 );
 
+alter table "youtube_data"
+add column "url" varchar(100);
 
-alter table "youtube" add column "url" varchar(100);
+alter table youtube_data
+add column search_weighted_doc tsvector;
+
+
+update youtube_data
+set search_weighted_doc = setweight(to_tsvector(title), 'A') || setweight(to_tsvector(description), 'B');
+

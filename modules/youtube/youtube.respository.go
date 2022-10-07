@@ -2,6 +2,7 @@ package youtube
 
 import (
 	"context"
+	"youtube_search_engine/common"
 	"youtube_search_engine/infra/database"
 
 	"gorm.io/gorm"
@@ -26,9 +27,9 @@ func getYoutubeData(ctx *context.Context, searchQuery string) *[]YoutubeData {
 	var result *gorm.DB
 
 	if searchQuery != "" {
-		result = db.Find(youtubeData, "to_tsquery(?) @@ to_tsvector(title || description)", searchQuery)
+		result = db.Scopes(common.PaginatedScope(ctx)).Find(youtubeData, "to_tsquery(?) @@ to_tsvector(title || description)", searchQuery)
 	} else {
-		result = db.Find(youtubeData)
+		result = db.Scopes(common.PaginatedScope(ctx)).Find(youtubeData)
 	}
 
 	if result.Error != nil {

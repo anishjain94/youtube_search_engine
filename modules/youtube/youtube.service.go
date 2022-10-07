@@ -21,7 +21,7 @@ func getVideosFromDb(ctx *context.Context) *[]YoutubeData {
 
 	query := common.GetQueryValueFromCtx(ctx)
 
-	searchQuery := parseToTsQuery(query.Get("query"))
+	searchQuery := common.ParseToTsQuery(query.Get("query"))
 
 	return getYoutubeData(ctx, searchQuery)
 }
