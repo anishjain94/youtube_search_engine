@@ -1,0 +1,54 @@
+version: "3.9"
+services:
+  youtube:
+    container_name: youtube_api
+    image: youtube_api
+    build:
+      context: ../
+      dockerfile: ./docker/dockerfiles/api.DockerFile
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_PORT=8080
+      - ENV=dev
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=pice_backend
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DBNAME=personal
+      - YOUTUBE_KEY=$YOUTUBE_API_KEY
+    depends_on:
+      - youtube_db
+  youtube-cron:
+    container_name: youtube_cron
+    image: youtube_cron
+    build:
+      context: ../
+      dockerfile: ./docker/dockerfiles/cron.DockerFile
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_PORT=8080
+      - ENV=dev
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=pice_backend
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DBNAME=personal
+      - YOUTUBE_KEY=$YOUTUBE_API_KEY
+    depends_on:
+      - youtube_db
+
+  youtube_db:
+    container_name: youtube_db
+    image: "postgres:12"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=pice_backend
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=personal
+    volumes:
+      - ./data:/var/lib/postgresql/data
+volumes:
+  nps_data: {}
