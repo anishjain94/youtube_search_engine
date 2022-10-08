@@ -2,5 +2,6 @@ naming convections
 txn middleware
 add order by, pagination. 
 Dockerize the project
+use minikube to deploy the project
 use scopes for pagination and ordering. 
 deploy it.
