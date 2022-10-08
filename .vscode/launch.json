@@ -11,7 +11,7 @@
       "mode": "debug",
       "console": "integratedTerminal",
 
-      "program": "${workspaceRoot}/cmd/main.go",
+      "program": "${workspaceRoot}/cmd/youtube/main.go",
       "env": { "ENV": "dev" },
       "showLog": true
     },
@@ -22,7 +22,7 @@
       "mode": "debug",
       "console": "integratedTerminal",
 
-      "program": "${workspaceRoot}/cmd/cron.go",
+      "program": "${workspaceRoot}/cmd/cron/cron.go",
       "env": { "ENV": "dev" },
       "showLog": true
     }

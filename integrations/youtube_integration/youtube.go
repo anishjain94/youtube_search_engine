@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/go-resty/resty/v2"
 )
@@ -22,18 +23,19 @@ func InitializeYoutube() {
 		SetBaseURL("https://youtube.googleapis.com")
 }
 
-func SearchQuery(ctx *context.Context, query string) *YoutubeVideoDto {
-	youtubeClient := YoutubeClient.R()
-	queryParams := "/youtube/v3/search?part=snippet&maxResults=100&q=" + query + "&key=" + YOUTUBE_KEY
+func SearchQuery(ctx *context.Context, ch chan<- string, wg *sync.WaitGroup, query string) {
 
-	resultDto := YoutubeVideoDto{}
+	wg.Add(1)
+
+	youtubeClient := YoutubeClient.R()
+	queryParams := "/youtube/v3/search?part=snippet&maxResults=10&q=" + query + "&key=" + YOUTUBE_KEY
+
 	resp, err := youtubeClient.
-		SetResult(&resultDto).
 		Get(queryParams)
 
 	if err != nil || resp.StatusCode() != http.StatusOK {
 		print(err.Error())
 	}
+	ch <- string(resp.Body())
 
-	return &resultDto
 }
