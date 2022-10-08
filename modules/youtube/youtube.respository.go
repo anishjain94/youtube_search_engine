@@ -10,13 +10,13 @@ import (
 
 func createYoutubeData(ctx *context.Context, data *[]YoutubeData) {
 
+	println("inserting youtube data in db")
 	db := database.GetDb(ctx)
 
 	result := db.Save(data)
 	if result.Error != nil {
 		print(result.Error)
 	}
-
 }
 
 func getYoutubeData(ctx *context.Context, searchQuery string) *[]YoutubeData {

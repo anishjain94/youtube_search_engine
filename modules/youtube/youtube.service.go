@@ -2,19 +2,32 @@ package youtube
 
 import (
 	"context"
+	"encoding/json"
+	"sync"
 	"youtube_search_engine/common"
 	youtubeIntegration "youtube_search_engine/integrations/youtube_integration"
 )
 
-func getVideosFromYoutube(ctx *context.Context) *[]YoutubeData {
+func GetVideosFromYoutube(ctx *context.Context) {
 
-	videoData := youtubeIntegration.SearchQuery(ctx, "surfing")
-	print(videoData)
+	ch := make(chan string)
+	var wg sync.WaitGroup
 
-	videoModel := ToModel(videoData)
-	createYoutubeData(ctx, videoModel)
+	go youtubeIntegration.SearchQuery(ctx, ch, &wg, "surfing")
 
-	return videoModel
+	resp := <-ch
+
+	go func() {
+		wg.Wait()
+		close(ch)
+	}()
+
+	videoData := youtubeIntegration.YoutubeVideoDto{}
+	json.Unmarshal([]byte(resp), &videoData)
+
+	videoModel := ToModel(&videoData)
+	go createYoutubeData(ctx, videoModel)
+
 }
 
 func getVideosFromDb(ctx *context.Context) *[]YoutubeData {
